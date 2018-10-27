@@ -4,9 +4,10 @@ import { ReactBingmaps } from 'react-bingmaps';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import InputBase from '@material-ui/core/InputBase';
 import MenuIcon from '@material-ui/icons/Menu';
+import LayerIcon from './image/terrain.svg';
 import LocationFabImage from './image/my_location.svg';
 import './App.css';
 
@@ -176,12 +177,11 @@ class App extends Component {
     return (
       <div>
         <div class="map-one">
-            <div>
-            <AppBar>
-                <Toolbar>
-                    <IconButton color="inherit" aria-label="Menu">
-                        <MenuIcon/>
-                    </IconButton>
+            <div >
+            <AppBar style={styles.AppBarContainer}>
+                <Toolbar style={styles.Toolbar}>
+                    <InputBase style={styles.SearchBarContainer} placeholder="Input Destination" />
+                    <Button style={styles.LayerButton}></Button>
                 </Toolbar>
             </AppBar>
             </div>
@@ -208,7 +208,41 @@ const styles = {
     position:'absolute',
     bottom:80,
     right:20
+  },
+
+  AppBarContainer: {
+    backgroundColor: 'transparent',
+    color: '#3B8283',
+    boxShadow: '0px 0px 0px',
+    paddingTop: 10
+  },
+
+  LayerButton: {
+    backgroundColor: '#3B8283',
+    opacity: 0.8,
+    backgroundImage: `url(${LayerIcon})`,
+    // backgroundSize: '10%',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    // boxShadow: `0px 2px 0px #3B8283`,
+    borderRadius: 0,
+    border: 'solid #3B8283 2px',
+    borderBottom: 0,
+    padding: 8,
+    width: 20
+  },
+
+  SearchBarContainer: {
+    backgroundColor: '#FFFFFF',
+    opacity: 0.8,
+    textColor: '#3B8283',
+    // boxShadow: `0px 2px 0px #3B8283`,
+    textAlign: 'center',
+    paddingLeft: 12,
+    width: '90%',
+    height: '36px'
   }
+
 }
 
 export default App;
