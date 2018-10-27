@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { ReactBingmaps } from 'react-bingmaps';
+// import {Button} from "react-bootstrap";
+import Button from '@material-ui/core/Button';
+import Image from './image/my_location.svg';
 import './App.css';
 
 class App extends Component {
@@ -7,7 +10,7 @@ class App extends Component {
     super(props);
     this.state = {
       isVisible : true,
-      bingmapKey: "Ah0FkX2Gv1-qefM-NeJQi18Mi0pUtir_s6CZacuUOiuQ-jMRg2jKQq08ex3UVoJ5", //Don't use this key in your environment.
+      bingmapKey: "Ah0FkX2Gv1-qefM-NeJQi18Mi0pUtir_s6CZacuUOiuQ-jMRg2jKQq08ex3UVoJ5",
       infoboxes : [
         {
           "location":[13.0827, 80.2707], "option":{ title: 'Chennai', description: '...' }, "addHandler": {"type" : "click", callback: this.callBackMethod}
@@ -158,16 +161,30 @@ class App extends Component {
   render() {
     return (
       <div>
+
           <div class="map-one">
+
             <ReactBingmaps
               id = "nine" 
               className = "customClass"
               bingmapKey = {this.state.bingmapKey}
             > 
             </ReactBingmaps>
+            <Button variant="fab" style={styles.my_location_Container}></Button>
           </div>
       </div>
     );
+  }
+}
+
+const styles = {
+  my_location_Container: {
+    backgroundImage: `url(${Image})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    position:'absolute',
+    bottom:80,
+    right:20
   }
 }
 
