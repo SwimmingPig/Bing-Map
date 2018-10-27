@@ -49,10 +49,6 @@ class App extends Component {
       },
       searchInput: "",
       getLocationHandledData: "",
-      polyline: {
-        "location": [[13.0827, 80.2707],[13.0827, 80.1907]],
-        "option": { strokeColor: 'blue', strokeThickness: 10, strokeDashArray: [1, 2, 5, 10] }
-      },
       directions: {
         "renderOptions": {"itineraryContainer": "itineraryContainer" },
         "requestOptions": {"routeMode": "driving", "maxRoutes": 2},
@@ -162,167 +158,14 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1><u>Example React-Bingmaps</u></h1>
-        <div>
-          <button onClick={this.changeState.bind(this)}>Change State</button>
-          <button onClick={()=>{this.setState({isVisible:!this.state.isVisible})}}>
-            {this.state.isVisible ? "Hide" : "Show"}
-          </button>
-          <a target="_blank" href="https://github.com/iniamudhan/react-bingmaps/blob/dev/src/App.js">source</a>
-        </div>
-        {this.state.isVisible && (<div>
-          <div className = "map-one">
-          <u>Bingmaps with Center set and zoom = 5</u>
-            <ReactBingmaps 
-              id = "one"
-              bingmapKey = {this.state.bingmapKey} 
-              center = {[13.0827, 80.2707]}
-              zoom = {4}
-              className = "customClass"
-            > 
-            </ReactBingmaps>
-          </div>
-          <div className = "map-two">
-          <u>Bingmaps with Pushpin</u>
-            <ReactBingmaps
-              id = "two" 
-              className = "customClass"
-              bingmapKey = {this.state.bingmapKey}
-              center = {[13.0827, 80.2707]}
-              mapTypeId = {"aerial"}
-              pushPins = { this.state.pushPins }
-            > 
-            </ReactBingmaps>
-          </div>
-          <div className = "map-one">
-          <u>Bingmaps with Infobox</u>
-            <ReactBingmaps 
-              id = "three"
-              center = {[13.0827, 80.2707]}
-              className = "customClass"
-              bingmapKey = {this.state.bingmapKey} 
-              infoboxes = {this.state.infoboxes }
-            > 
-            </ReactBingmaps>
-          </div>
-          <div className = "map-two">
-          <u>Bingmaps with Infobox and Pushpin</u>
-            <ReactBingmaps 
-              id = "four"
-              center = {[13.0827, 80.2707]}
-              className = "customClass"
-              bingmapKey = {this.state.bingmapKey} 
-              infoboxesWithPushPins = {this.state.infoboxesWithPushPins}
-            > 
-            </ReactBingmaps>
-          </div>
-          <div className = "map-one">
-          <u>Bingmaps with Regular Polygons</u>
-            <ReactBingmaps
-              id = "five" 
-              center = {[13.0827, 80.2707]}
-              className = "customClass"
-              bingmapKey = {this.state.bingmapKey}
-              regularPolygons = {this.state.regularPolygons}
-            > 
-            </ReactBingmaps>
-          </div>
-          <div className = "map-two">
-          <u>Bingmaps with Spatial Data Service (Boundary)</u>
-            <span style={{'display':'inline-block'}}>
-              <form onSubmit={this.handleSubmit.bind(this)}>
-                <input type="text" placeholder="search place, pin, city"
-                  onChange={(event)=>{this.setState({searchInput:event.target.value})}} 
-                  value={this.state.searchInput}>
-                </input>
-                <input type="submit" value="Search" />
-              </form>
-            </span>
-            <ReactBingmaps
-              className = "customClass"
-              id = "six" 
-              center = {[13.0827, 80.2707]}
-              bingmapKey = {this.state.bingmapKey}
-              boundary = {this.state.boundary}
-            > 
-            </ReactBingmaps>
-          </div>
-          <div className = "map-one">
-          <u>Bingmaps with Get Location - <span>{this.state.getLocationHandledData}</span></u>
-            <ReactBingmaps
-              id = "seven" 
-              className = "customClass"
-              center = {[13.0827, 80.2707]}
-              bingmapKey = {this.state.bingmapKey}
-              getLocation = {
-                {addHandler: "click", callback:this.GetLocationHandled.bind(this)}
-              }
-            > 
-            </ReactBingmaps>
-          </div>
-          <div className = "map-two">
-          <u>Bingmaps with EventHandlers - callback data is consoled</u>
-            <ReactBingmaps
-              className = "customClass"
-              id = "eight" 
-              center = {[13.0827, 80.2707]}
-              bingmapKey = {this.state.bingmapKey}
-              mapHandlers = {
-                [
-                  {addHandler: "click", callback:this.GetEventHandled.bind(this)},
-                  {addHandler: "viewchangeend", callback:this.GetEventHandled.bind(this)}
-                ]
-              }
-            > 
-            </ReactBingmaps>
-          </div>
-          <div className = "map-one">
-          <u>Bingmaps with Polyline</u>
+          <div class="map-one">
             <ReactBingmaps
               id = "nine" 
               className = "customClass"
-              center = {[13.0827, 80.2707]}
               bingmapKey = {this.state.bingmapKey}
-              polyline = {this.state.polyline}
-            > 
-            </ReactBingmaps>
-          </div><div className = "map-two">
-          <u>Bingmaps with mapOptions - 'maxZoom': 12, 'minZoom': 5 </u>
-            <ReactBingmaps
-              className = "customClass"
-              id = "ten" 
-              center = {[13.0827, 80.2707]}
-              bingmapKey = {this.state.bingmapKey}
-              mapOptions = { {'maxZoom': 12, 'minZoom': 5} }
             > 
             </ReactBingmaps>
           </div>
-          <div className = "map-three">
-          <u>Bingmaps with Directions</u>
-            <ReactBingmaps
-              className = "customClass"
-              id = "eleven" 
-              center = {[13.0827, 80.2707]}
-              bingmapKey = {this.state.bingmapKey}
-              directions = {this.state.directions}
-            > 
-            </ReactBingmaps>
-            <div className="direction-container">
-              <div className="input-panel" id='inputPanel'></div>
-              <div className="itinerary-container" id='itineraryContainer'></div>
-            </div>
-          </div>
-        </div>)}
-        <br />
-        <h3>For new feature to be added, open new issue <a href="https://github.com/iniamudhan/react-bingmaps/issues/new">here</a>. Thanks</h3>
-        <h4>Support and donate for React-Bingmaps.</h4>
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" >
-          <input type="hidden" name="cmd" value="_s-xclick" />
-          <input type="hidden" name="hosted_button_id" value="RVCBMXBZ36B5S" />
-          <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!" />
-          <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1" />
-        </form>
-
       </div>
     );
   }
