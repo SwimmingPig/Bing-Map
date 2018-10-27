@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { ReactBingmaps } from 'react-bingmaps';
 // import {Button} from "react-bootstrap";
+import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import Image from './image/my_location.svg';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import LocationFabImage from './image/my_location.svg';
 import './App.css';
 
 class App extends Component {
@@ -63,6 +68,9 @@ class App extends Component {
                 address: 'Salem, Tamilnadu'
               }
             ]
+      },
+      mapOptions: {
+          showDashboard: false
       }
     }
   }
@@ -129,6 +137,9 @@ class App extends Component {
                 address: 'Coimbatore, Tamilnadu'
               }
             ]
+      },
+      mapOptions: {
+        showDashboard: false
       }
     })
   }
@@ -145,6 +156,9 @@ class App extends Component {
           "option":{
             entityType: 'PopulatedPlace'
           }
+        },
+        mapOptions: {
+          showDashboard: false
         }
       })
     }
@@ -161,25 +175,34 @@ class App extends Component {
   render() {
     return (
       <div>
-
-          <div class="map-one">
+        <div class="map-one">
+            <div>
+            <AppBar>
+                <Toolbar>
+                    <IconButton color="inherit" aria-label="Menu">
+                        <MenuIcon/>
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
+            </div>
 
             <ReactBingmaps
-              id = "nine" 
-              className = "customClass"
-              bingmapKey = {this.state.bingmapKey}
-            > 
+            id = "nine" 
+            className = "customClass"
+            bingmapKey = {this.state.bingmapKey}
+            mapOptions = {this.state.mapOptions}
+            >
             </ReactBingmaps>
-            <Button variant="fab" style={styles.my_location_Container}></Button>
-          </div>
+            <Button variant="fab" style={styles.MyLocationContainer}></Button>
+        </div>   
       </div>
     );
   }
 }
 
 const styles = {
-  my_location_Container: {
-    backgroundImage: `url(${Image})`,
+  MyLocationContainer: {
+    backgroundImage: `url(${LocationFabImage})`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     position:'absolute',
