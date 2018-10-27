@@ -9,8 +9,11 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import InputBase from '@material-ui/core/InputBase';
+import Input from '@material-ui/core/Input';
+import IconButton from '@material-ui/core/IconButton';
+// import Terrain from '@material-ui/icons/Terrain';
 
-import LayerIcon from './image/terrain.svg';
+import Terrain from './image/terrain.svg';
 import LocationFabImage from './image/my_location.svg';
 import BingLogo from './image/bing_logo.svg';
 import ArrowDown from './image/arrow_down_2.svg';
@@ -27,8 +30,11 @@ class App extends Component {
     this.counter = 1;
     this.d = {}
 
-
     this.state = {
+      slideIndex: 0,
+      updateCount: 0,
+      color: 'red',
+      mapTypeId: 'road',
       isVisible : false,
       bingmapKey: "Ah0FkX2Gv1-qefM-NeJQi18Mi0pUtir_s6CZacuUOiuQ-jMRg2jKQq08ex3UVoJ5",
       infoboxes : [
@@ -73,7 +79,11 @@ class App extends Component {
       searchInput: "",
       getLocationHandledData: "",
       directions: this.d,
-
+      colorZero: "secondary",
+      colorOne: "default",
+      colorTwo: "default",
+      colorThree: "default",
+      slideIndex: 0,
     //   directions: {
     //     "renderOptions": {"itineraryContainer": "itineraryContainer" },
     //     "requestOptions": {"routeMode": "driving", "maxRoutes": 2},
@@ -95,6 +105,8 @@ class App extends Component {
   
   changeState(){
     
+    var str = document.getElementById("inputBase").value
+
     if(this.counter === 0){
         this.d = {};
         this.counter = 1;
@@ -109,6 +121,7 @@ class App extends Component {
           "inputPanel": "inputPanel",
           "renderOptions": {"itineraryContainer": "printoutPanel" },
           "requestOptions": {"routeMode": "driving", "maxRoutes": 2},
+          "wayPoints": [{address: str}, {}],
         };
         this.counter = 0;
         console.log(this.d);
@@ -251,20 +264,68 @@ class App extends Component {
     console.log(callbackData);
   }
 
-  
+  changeTerrianHandler(){
+      if(this.state.mapTypeId === "road"){
+          this.setState({
+            mapTypeId : "aerial"
+          });
+      }else{
+        this.setState({
+            mapTypeId: "road"
+        });
+      }
+  }  
   render() {
     var settings = {
         className: "CarouselContainer",
         centerMode: true,
         centerPadding: '4px',
         arrows: false,
-        // fade: true,
-        // dots: true,
         infinite: true,
         speed: 500,
         slidesToShow: 3,
-        slidesToScroll: 2,
-        lazyLoad: true,
+        slidesToScroll: 1,
+        slidesPerRow: 1,
+        afterChange: () => this.setState(state => ({
+            //updateCount: state.updateCount + 1,
+        })),
+        beforeChange: (current, next) => {
+            this.setState({
+                slideIndex: next
+            });
+            console.log(this.state.slideIndex);
+            if(this.state.slideIndex%4 === 0){
+                
+                this.setState({
+                    colorZero: 'secondary',
+                    colorOne: 'default',
+                    colorTwo: 'default',
+                    colorThree: 'default'
+                });
+            }else if(this.state.slideIndex%4 === 1){
+                this.setState({
+                    colorZero: 'default',
+                    colorOne: 'secondary',
+                    colorTwo: 'default',
+                    colorThree: 'default'
+                });
+            }else if(this.state.slideIndex%4===2){
+                this.setState({
+                    colorZero: 'default',
+                    colorOne: 'default',
+                    colorTwo: 'secondary',
+                    colorThree: 'default'
+                });
+            }else{
+                this.setState({
+                    colorZero: 'default',
+                    colorOne: 'default',
+                    colorTwo: 'default',
+                    colorThree: 'secondary'
+                });
+            }
+            
+        }
     };
 
     return (
@@ -276,20 +337,19 @@ class App extends Component {
                     {/* <Button onClick={this.handleSubmit.bind(this)} style={styles.LayerButton}></Button> */}
                     <InputBase id="inputBase" style={styles.SearchBarContainer} placeholder="Input Destination" />
                     <Button onClick={this.changeState.bind(this)} style={styles.BingButton}></Button>
-                    <Button style={styles.LayerButton}></Button>
                 </Toolbar>
+                <Button variant="fab" style={styles.LayerButton} onClick={this.changeTerrianHandler.bind(this)}></Button>
+                {/* <IconButton className={classes.button}>
+                    <Terrain />
+                </IconButton> */}
             </AppBar>
             </div>
-
-            <div>
-            
-            </div> 
 
             <ReactBingmaps
             id = "nine" 
             className = "customClass"
             center = {[24.8, 121]}
-            mapTypeId = "road"
+            mapTypeId = {this.state.mapTypeId}
             bingmapKey = {this.state.bingmapKey}
             mapOptions = {this.state.mapOptions}
             directions = {this.state.directions}
@@ -300,22 +360,28 @@ class App extends Component {
             {/* <Button variant="fab" style={styles.MyLocationContainer}></Button> */}
             <Slider {...settings} >
                 <div align="center">
-                    <Button variant="fab" style={styles.CarouselFour}></Button>
+                    <Button variant="fab" 
+                        style={styles.CarouselFour} color={this.state.colorThree}></Button>
+                    {/* <Input 
+                        onChange={e => this.slider.slideGoTo(e.target.value)}
+                        value={this.state.slideIndex}
+                        textColor= 'red'
+                    /> */}
                 </div>
                 <div align="center">
-                    <Button variant="fab" style={styles.CarouselLeft}></Button>
+                    <Button variant="fab" style={styles.CarouselLeft} color={this.state.colorZero}></Button> 
                 </div>
                 <div align="center">
-                    <Button variant="fab" style={styles.CarouselMid}></Button>
+                    <Button variant="fab" style={styles.CarouselMid} color={this.state.colorOne}></Button>
                 </div>
                 <div align="center">
-                    <Button variant="fab" style={styles.CarouselRight}></Button>
+                    <Button variant="fab" style={styles.CarouselRight} color={this.state.colorTwo}></Button>
                 </div>
             </Slider>
 
             {this.state.isVisible && <div className="direction-container" style={styles.DirectrionContainer}>
-                <div className="input-panel" id='inputPanel' style={styles.DirectrionContainer}></div>
-                <div className="itinerary-container" id='itineraryContainer' style={styles.DirectrionContainer}></div>
+                <div className="input-panel" id='inputPanel' ></div>
+                <div className="itinerary-container" id='itineraryContainer'></div>
                 <Button onClick={()=>{this.setState({isVisible:!this.state.isVisible})}} style={styles.HideButton}>
                 {/* {this.state.isVisible ? "V" : "Show"} */}
                 </Button>
@@ -341,18 +407,14 @@ const styles = {
     },
 
     LayerButton: {
+        backgroundImage: `url(${Terrain})`,
         backgroundColor: '#3B8283',
         opacity: 0.8,
-        backgroundImage: `url(${LayerIcon})`,
-        // backgroundSize: '10%',
+        width: 40,
+        height: 40,
+        left: '86vw',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        // boxShadow: `0px 2px 0px #3B8283`,
-        borderRadius: 0,
-        border: 'solid #3B8283 2px',
-        borderBottom: 0,
-        padding: 8,
-        width: 20
     },
 
     SearchBarContainer: {
@@ -375,17 +437,13 @@ const styles = {
         opacity: 0.8,
         borderRadius: 0
     },
-    // changeStateContainer2: {
-    //     position:'absolute',
-    //     bottom:-100,
-    //     right:180
-    // },
 
-    CarouselMid: {
+    CarouselFour: {
         backgroundImage: `url(${Subway})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         boxShadow: '0px 0px 0px',
+        //backgroundColor: this.state.colorZero,
         // margin: '0 auto',
         // marginRight: 'auto'
         // position:'absolute',
@@ -396,8 +454,9 @@ const styles = {
     CarouselLeft: {
         backgroundImage: `url(${Car})`,
         backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
+        backgroundPosition: 'center', 
         boxShadow: '0px 0px 0px',
+        //backgroundColor: this.state.colorOne,
         // position:'absolute',
         // bottom:80,
         // left: 100
@@ -408,12 +467,13 @@ const styles = {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         boxShadow: '0px 0px 0px',
+        //backgroundColor: this.state.colorThree,
         // position:'absolute',
         // bottom:80,
         // left: 200
     },
 
-    CarouselFour: {
+    CarouselMid: {
         backgroundImage: `url(${Restaurant})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
