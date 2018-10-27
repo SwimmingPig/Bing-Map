@@ -8,12 +8,16 @@ import '../node_modules/slick-carousel/slick/slick.css';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
-import MenuIcon from '@material-ui/icons/Menu';
+
 import LayerIcon from './image/terrain.svg';
 import LocationFabImage from './image/my_location.svg';
 import BingLogo from './image/bing_logo.svg';
+import ArrowDown from './image/arrow_down_2.svg';
+import Car from './image/car.svg';
+import Parking from './image/parking.svg';
+import Restaurant from './image/restaurant.svg';
+import Subway from './image/subway.svg';
 import './App.css';
 
 class App extends Component {
@@ -25,7 +29,7 @@ class App extends Component {
 
 
     this.state = {
-      isVisible : true,
+      isVisible : false,
       bingmapKey: "Ah0FkX2Gv1-qefM-NeJQi18Mi0pUtir_s6CZacuUOiuQ-jMRg2jKQq08ex3UVoJ5",
       infoboxes : [
         {
@@ -279,43 +283,43 @@ class App extends Component {
 
             <div>
             
-            <Button onClick={()=>{this.setState({isVisible:!this.state.isVisible})}} style={styles.changeStateContainer2}>
-                {this.state.isVisible ? "Hide" : "Show"}
-            </Button>
             </div> 
 
             <ReactBingmaps
             id = "nine" 
             className = "customClass"
-            center = {[121.00, 24.00]}
+            center = {[24.8, 121]}
+            mapTypeId = "road"
             bingmapKey = {this.state.bingmapKey}
             mapOptions = {this.state.mapOptions}
             directions = {this.state.directions}
             boundary = {this.state.boundary}
             >
             </ReactBingmaps>
-            {this.state.isVisible && <div className="direction-container">
-                <div className="input-panel" id='inputPanel'></div>
-                <div className="itinerary-container" id='itineraryContainer'></div>
-              </div>}
+            
             {/* <Button variant="fab" style={styles.MyLocationContainer}></Button> */}
             <Slider {...settings} >
-            <div align="center">
-                <Button variant="fab" style={styles.CarouselMid}></Button>
-            </div>
-            <div align="center">
-                <Button variant="fab" style={styles.CarouselLeft}></Button>
-            </div>
-            <div align="center">
-                <Button variant="fab" style={styles.CarouselRight}></Button>
-            </div>
-            {/* <div align="center">
-                <Button variant="fab" style={styles.CarouselLeft}></Button>
-            </div> */}
-            <div align="center">
-                <Button variant="fab" style={styles.CarouselRight}></Button>
-            </div>
+                <div align="center">
+                    <Button variant="fab" style={styles.CarouselFour}></Button>
+                </div>
+                <div align="center">
+                    <Button variant="fab" style={styles.CarouselLeft}></Button>
+                </div>
+                <div align="center">
+                    <Button variant="fab" style={styles.CarouselMid}></Button>
+                </div>
+                <div align="center">
+                    <Button variant="fab" style={styles.CarouselRight}></Button>
+                </div>
             </Slider>
+
+            {this.state.isVisible && <div className="direction-container" style={styles.DirectrionContainer}>
+                <div className="input-panel" id='inputPanel' style={styles.DirectrionContainer}></div>
+                <div className="itinerary-container" id='itineraryContainer' style={styles.DirectrionContainer}></div>
+                <Button onClick={()=>{this.setState({isVisible:!this.state.isVisible})}} style={styles.HideButton}>
+                {/* {this.state.isVisible ? "V" : "Show"} */}
+                </Button>
+            </div>}
         </div>   
       </div>
     );
@@ -371,14 +375,14 @@ const styles = {
         opacity: 0.8,
         borderRadius: 0
     },
-    changeStateContainer2: {
-        position:'absolute',
-        bottom:-100,
-        right:180
-    },
+    // changeStateContainer2: {
+    //     position:'absolute',
+    //     bottom:-100,
+    //     right:180
+    // },
 
     CarouselMid: {
-        backgroundImage: `url(${LayerIcon})`,
+        backgroundImage: `url(${Subway})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         boxShadow: '0px 0px 0px',
@@ -390,7 +394,7 @@ const styles = {
     },
 
     CarouselLeft: {
-        backgroundImage: `url(${LocationFabImage})`,
+        backgroundImage: `url(${Car})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         boxShadow: '0px 0px 0px',
@@ -400,13 +404,38 @@ const styles = {
     },
 
     CarouselRight: {
-        backgroundImage: `url(${LocationFabImage})`,
+        backgroundImage: `url(${Parking})`,
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         boxShadow: '0px 0px 0px',
         // position:'absolute',
         // bottom:80,
         // left: 200
+    },
+
+    CarouselFour: {
+        backgroundImage: `url(${Restaurant})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center',
+        boxShadow: '0px 0px 0px',
+    },
+
+    DirectrionContainer: {
+        position:'absolute',
+        bottom:0,
+        width: '100%',
+        backgroundColor: '#FFFFFF',
+    },
+
+    HideButton: {
+        backgroundImage: `url(${ArrowDown})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'right',
+        opacity: 0.5,
+        position:'absolute',
+        bottom:13,
+        width: '50%'
+        // align: 'center'
     }
 }
 
