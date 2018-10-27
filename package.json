@@ -9,7 +9,10 @@
     "react-bingmaps": "^3.6.1",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.6.0",
-    "react-scripts": "2.0.5"
+    "react-scripts": "2.0.5",
+    "react-slick": "^0.23.2",
+    "react-touch-carousel": "^0.8.3",
+    "slick-carousel": "^1.8.1"
   },
   "scripts": {
     "start": "react-scripts start",

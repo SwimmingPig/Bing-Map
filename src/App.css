@@ -7,3 +7,14 @@
 	width: 100vw;
 	height: 100vh;
 }
+
+.CarouselContainer{
+	width: 45vw;
+	/*margin-left: auto;*/
+	/*margin-right: auto;*/
+	position: absolute;
+	bottom: 9vh;
+	right: 30vw;
+	background-color: transparent;
+
+}
