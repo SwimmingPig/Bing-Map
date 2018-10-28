@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { ReactBingmaps } from 'react-bingmaps';
-// import {Carousel} from "react-bootstrap";
 import Slider from 'react-slick';
 import '../node_modules/slick-carousel/slick/slick-theme.css';
 import '../node_modules/slick-carousel/slick/slick.css'; 
@@ -9,9 +8,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import InputBase from '@material-ui/core/InputBase';
-import Input from '@material-ui/core/Input';
-import IconButton from '@material-ui/core/IconButton';
-// import Terrain from '@material-ui/icons/Terrain';
 
 import Terrain from './image/terrain.svg';
 import LocationFabImage from './image/my_location.svg';
@@ -21,7 +17,10 @@ import Car from './image/car.svg';
 import Parking from './image/parking.svg';
 import Restaurant from './image/restaurant.svg';
 import Subway from './image/subway.svg';
+import fs from 'fs';
 import './App.css';
+
+var arr = require('./Location.json');
 
 class App extends Component {
   constructor(props) {
@@ -31,9 +30,10 @@ class App extends Component {
     this.d = {}
 
     this.state = {
+      check: false,
       slideIndex: 0,
       updateCount: 0,
-      color: 'red',
+      // color: 'red',
       mapTypeId: 'road',
       isVisible : false,
       bingmapKey: "Ah0FkX2Gv1-qefM-NeJQi18Mi0pUtir_s6CZacuUOiuQ-jMRg2jKQq08ex3UVoJ5",
@@ -84,23 +84,14 @@ class App extends Component {
       colorTwo: "default",
       colorThree: "default",
       slideIndex: 0,
-    //   directions: {
-    //     "renderOptions": {"itineraryContainer": "itineraryContainer" },
-    //     "requestOptions": {"routeMode": "driving", "maxRoutes": 2},
-    //     "wayPoints": [
-    //           {
-    //             address: 'Chennai, Tamilnadu'
-    //           },
-    //           {
-    //             address: 'Salem, Tamilnadu'
-    //           }
-    //         ]
-    //   },
       mapOptions: {
           showDashboard: false
       }
     }
+
+    this.changeState = this.changeState.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.RequestHandler = this.RequestHandler.bind(this);
   }
   
   changeState(){
@@ -180,28 +171,13 @@ class App extends Component {
         "option": { strokeColor: 'red', strokeThickness: 10, strokeDashArray: [1, 2, 5, 10] }
       },
       directions: this.d,
-    //   directions: {
-    //     "inputPanel": "inputPanel",
-    //     "renderOptions": {"itineraryContainer": "itineraryContainer" },
-    //     "requestOptions": {"routeMode": "driving", "maxRoutes": 2},
-    //     "wayPoints": [
-    //           {
-    //             address: 'Chennai, Tamilnadu'
-    //           },
-    //           {
-    //             address: 'Salem, Tamilnadu'
-    //           },
-    //           {
-    //             address: 'Coimbatore, Tamilnadu'
-    //           }
-    //         ]
-    //   },
       mapOptions: {
         showDashboard: false
       }
     })
     this.handleSubmit();
   }
+
   handleSubmit(event){
 
     console.log("in submit");
@@ -255,13 +231,53 @@ class App extends Component {
     // }
     // event.preventDefault();
   }
+
   GetLocationHandled(location){
-    this.setState({
-      getLocationHandledData: JSON.stringify(location)
-    });
+    if(this.state.check == true){
+      this.setState({
+        getLocationHandledData: JSON.stringify(location)
+      });
+      var obj = JSON.parse(this.state.getLocationHandledData);
+
+      for (var i in arr){
+        if(arr[i].lat - obj.latitude >= -2 && arr[i].lat - obj.latitude <= 2){
+          this.setState({
+            pushPins: [
+              ...this.state.pushPins,
+              {
+                "location":[arr[i].lat, arr[i].lng], "option":{color: 'red'}, "addHandler": {"type" : "click", callback: this.callBackMethod }
+              }
+            ]
+          });
+        }
+      }
+    }
   }
   GetEventHandled(callbackData){
     console.log(callbackData);
+  }
+
+  RequestHandler(e){
+    if(this.state.check == false){
+      this.setState({
+        check: true
+      });
+    }else{
+      this.setState({
+        check: false,
+        pushPins:[
+          {
+
+          }
+        ]
+      });
+    }
+  }
+
+  pushPinsCrash(){
+    this.setState({
+        check: false
+    });
   }
 
   changeTerrianHandler(){
@@ -286,46 +302,46 @@ class App extends Component {
         slidesToShow: 3,
         slidesToScroll: 1,
         slidesPerRow: 1,
-        afterChange: () => this.setState(state => ({
-            //updateCount: state.updateCount + 1,
-        })),
-        beforeChange: (current, next) => {
-            this.setState({
-                slideIndex: next
-            });
-            console.log(this.state.slideIndex);
-            if(this.state.slideIndex%4 === 0){
+        // afterChange: () => this.setState(state => ({
+        //     //updateCount: state.updateCount + 1,
+        // })),
+        // beforeChange: (current, next) => {
+        //     this.setState({
+        //         slideIndex: next
+        //     });
+        //     console.log(this.state.slideIndex);
+        //     if(this.state.slideIndex%4 === 0){
                 
-                this.setState({
-                    colorZero: 'secondary',
-                    colorOne: 'default',
-                    colorTwo: 'default',
-                    colorThree: 'default'
-                });
-            }else if(this.state.slideIndex%4 === 1){
-                this.setState({
-                    colorZero: 'default',
-                    colorOne: 'secondary',
-                    colorTwo: 'default',
-                    colorThree: 'default'
-                });
-            }else if(this.state.slideIndex%4===2){
-                this.setState({
-                    colorZero: 'default',
-                    colorOne: 'default',
-                    colorTwo: 'secondary',
-                    colorThree: 'default'
-                });
-            }else{
-                this.setState({
-                    colorZero: 'default',
-                    colorOne: 'default',
-                    colorTwo: 'default',
-                    colorThree: 'secondary'
-                });
-            }
+        //         this.setState({
+        //             colorZero: 'secondary',
+        //             colorOne: 'default',
+        //             colorTwo: 'default',
+        //             colorThree: 'default'
+        //         });
+        //     }else if(this.state.slideIndex%4 === 1){
+        //         this.setState({
+        //             colorZero: 'default',
+        //             colorOne: 'secondary',
+        //             colorTwo: 'default',
+        //             colorThree: 'default'
+        //         });
+        //     }else if(this.state.slideIndex%4===2){
+        //         this.setState({
+        //             colorZero: 'default',
+        //             colorOne: 'default',
+        //             colorTwo: 'secondary',
+        //             colorThree: 'default'
+        //         });
+        //     }else{
+        //         this.setState({
+        //             colorZero: 'default',
+        //             colorOne: 'default',
+        //             colorTwo: 'default',
+        //             colorThree: 'secondary'
+        //         });
+        //     }
             
-        }
+        // }
     };
 
     return (
@@ -348,12 +364,18 @@ class App extends Component {
             <ReactBingmaps
             id = "nine" 
             className = "customClass"
-            center = {[24.8, 121]}
+            center = {[37.762, -122.43]}
             mapTypeId = {this.state.mapTypeId}
             bingmapKey = {this.state.bingmapKey}
             mapOptions = {this.state.mapOptions}
             directions = {this.state.directions}
             boundary = {this.state.boundary}
+            pushPins = {this.state.pushPins}
+            getLocation = {
+              {
+                addHandler: "click", callback: this.GetLocationHandled.bind(this)
+              }
+            }
             >
             </ReactBingmaps>
             
@@ -369,19 +391,20 @@ class App extends Component {
                     /> */}
                 </div>
                 <div align="center">
-                    <Button variant="fab" style={styles.CarouselLeft} color={this.state.colorZero}></Button> 
+                    <Button variant="fab" style={styles.CarouselLeft}></Button> 
                 </div>
                 <div align="center">
-                    <Button variant="fab" style={styles.CarouselMid} color={this.state.colorOne}></Button>
+                    <Button variant="fab" style={styles.CarouselMid}></Button>
                 </div>
                 <div align="center">
-                    <Button variant="fab" style={styles.CarouselRight} color={this.state.colorTwo}></Button>
+                    <Button variant="fab" onClick={this.RequestHandler} style={styles.CarouselRight}></Button>
                 </div>
             </Slider>
 
             {this.state.isVisible && <div className="direction-container" style={styles.DirectrionContainer}>
                 <div className="input-panel" id='inputPanel' ></div>
                 <div className="itinerary-container" id='itineraryContainer'></div>
+                <div id='printoutPanel'></div>
                 <Button onClick={()=>{this.setState({isVisible:!this.state.isVisible})}} style={styles.HideButton}>
                 {/* {this.state.isVisible ? "V" : "Show"} */}
                 </Button>
@@ -443,7 +466,7 @@ const styles = {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         boxShadow: '0px 0px 0px',
-        //backgroundColor: this.state.colorZero,
+        backgroundColor: '#178585',
         // margin: '0 auto',
         // marginRight: 'auto'
         // position:'absolute',
@@ -456,7 +479,7 @@ const styles = {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center', 
         boxShadow: '0px 0px 0px',
-        //backgroundColor: this.state.colorOne,
+        backgroundColor: '#408A75',
         // position:'absolute',
         // bottom:80,
         // left: 100
@@ -467,7 +490,7 @@ const styles = {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         boxShadow: '0px 0px 0px',
-        //backgroundColor: this.state.colorThree,
+        backgroundColor: '#96B3AD',
         // position:'absolute',
         // bottom:80,
         // left: 200
@@ -478,6 +501,7 @@ const styles = {
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         boxShadow: '0px 0px 0px',
+        backgroundColor: '#A7E8DE'
     },
 
     DirectrionContainer: {
