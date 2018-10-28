@@ -27,7 +27,7 @@ class App extends Component {
     super(props);
 
     this.counter = 1;
-    this.d = {}
+    this.d = {};
 
     this.state = {
       check: false,
@@ -96,7 +96,7 @@ class App extends Component {
   
   changeState(){
     
-    var str = document.getElementById("inputBase").value
+    var str = document.getElementById("inputBase").value;
 
     if(this.counter === 0){
         this.d = {};
@@ -402,7 +402,7 @@ class App extends Component {
             </Slider>
 
             {this.state.isVisible && <div className="direction-container" style={styles.DirectrionContainer}>
-                <div className="input-panel" id='inputPanel' ></div>
+                <div className="input-panel" id='inputPanel'></div>
                 <div className="itinerary-container" id='itineraryContainer'></div>
                 <div id='printoutPanel'></div>
                 <Button onClick={()=>{this.setState({isVisible:!this.state.isVisible})}} style={styles.HideButton}>
